@@ -14,7 +14,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5555';
+  const API_BASE = import.meta.env.VITE_API_URL;
 
   const fetchUser = async () => {
     const token = localStorage.getItem('uniplay_token');

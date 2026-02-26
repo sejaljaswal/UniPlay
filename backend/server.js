@@ -10,6 +10,7 @@ const Message = require('./models/Message');
 
 const app = express();
 // Use environment variable for allowed frontend URLs (comma-separated)
+// Example: http://localhost:5173,https://your-site.netlify.app
 const allowedOrigins = process.env.FRONTEND_URLS
   ? process.env.FRONTEND_URLS.split(',')
   : ['http://localhost:5173', 'http://localhost:5174'];

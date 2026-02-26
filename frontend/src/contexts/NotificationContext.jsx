@@ -11,8 +11,8 @@ export function useNotification() {
   return context;
 }
 
-const SOCKET_URL = import.meta.env.VITE_API_URL || 'http://localhost:5555';
-const socket = io(SOCKET_URL);
+const SOCKET_URL = import.meta.env.VITE_API_URL;
+const socket = io(import.meta.env.VITE_API_URL);
 
 export function NotificationProvider({ children }) {
   const [notifications, setNotifications] = useState([]);

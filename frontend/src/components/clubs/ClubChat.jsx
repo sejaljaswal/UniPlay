@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 import { useAuth } from '../../contexts/AuthContext';
 import { Users, MessageCircle } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5555';
-const socket = io(API_URL); // Use env var for socket connection
+const API_URL = import.meta.env.VITE_API_URL;
+const socket = io(import.meta.env.VITE_API_URL); // Use env var for socket connection
 
 function ClubChat({ clubId, clubName, clubIcon }) {
   const [messages, setMessages] = useState([]);
@@ -123,8 +123,8 @@ function ClubChat({ clubId, clubName, clubIcon }) {
         <button
           onClick={() => setActiveTab('chat')}
           className={`flex items-center gap-2 px-6 py-3 font-bold rounded-lg transition-all ${activeTab === 'chat'
-              ? 'bg-blue-600 text-white shadow-lg'
-              : 'bg-white text-blue-600 hover:bg-blue-50 border border-blue-300'
+            ? 'bg-blue-600 text-white shadow-lg'
+            : 'bg-white text-blue-600 hover:bg-blue-50 border border-blue-300'
             }`}
         >
           <MessageCircle size={20} />
@@ -133,8 +133,8 @@ function ClubChat({ clubId, clubName, clubIcon }) {
         <button
           onClick={() => setActiveTab('members')}
           className={`flex items-center gap-2 px-6 py-3 font-bold rounded-lg transition-all ${activeTab === 'members'
-              ? 'bg-blue-600 text-white shadow-lg'
-              : 'bg-white text-blue-600 hover:bg-blue-50 border border-blue-300'
+            ? 'bg-blue-600 text-white shadow-lg'
+            : 'bg-white text-blue-600 hover:bg-blue-50 border border-blue-300'
             }`}
         >
           <Users size={20} />
