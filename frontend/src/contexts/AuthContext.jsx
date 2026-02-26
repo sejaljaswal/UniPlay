@@ -32,7 +32,7 @@ export function AuthProvider({ children }) {
         } else if (res.status === 401) {
           logout();
         }
-      } catch (error) {}
+      } catch (error) { }
     }
   };
 
@@ -110,6 +110,31 @@ export function AuthProvider({ children }) {
     }
   };
 
+  const googleLogin = async (token) => {
+    setLoading(true);
+    try {
+      const res = await fetch(`${API_BASE}/api/auth/google`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token })
+      });
+      const data = await res.json();
+      if (res.ok && data.token && data.user) {
+        localStorage.setItem('uniplay_token', data.token);
+        localStorage.setItem('uniplay_user', JSON.stringify(data.user));
+        setUser(data.user);
+        setLoading(false);
+        return true;
+      }
+      setLoading(false);
+      return false;
+    } catch (err) {
+      console.error('Google login error:', err);
+      setLoading(false);
+      return false;
+    }
+  };
+
   const logout = () => {
     setUser(null);
     localStorage.removeItem('uniplay_user');
@@ -119,13 +144,14 @@ export function AuthProvider({ children }) {
   const refreshUser = async () => {
     try {
       await fetchUser();
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const value = {
     user,
     login,
     signup,
+    googleLogin,
     logout,
     loading,
     refreshUser

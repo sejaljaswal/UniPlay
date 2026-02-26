@@ -179,21 +179,38 @@ exports.getClubChat = async (req, res) => {
     const club = await Club.findById(clubId).populate('chat.user', 'name avatar');
     if (!club) return res.status(404).json({ message: 'Club not found' });
     
-    // Check if user or organizer is a member
-    let isMember = false;
+    // Only block users who are not members; organizers always allowed
     if (req.user) {
-      isMember = club.members.map(id => id.toString()).includes(req.user.id.toString());
-    } else if (req.organizer) {
-      isMember = club.members.map(id => id.toString()).includes(req.organizer.id.toString());
+      const isMember = club.members.map(id => id.toString()).includes(req.user.id.toString());
+      if (!isMember) {
+        return res.status(403).json({ message: 'You must join the club to view the chat.' });
+      }
     }
-    
-    if (!isMember) {
-      return res.status(403).json({ message: 'You must join the club to view the chat.' });
-    }
+    // If organizer, always allow
     
     // Sort chat by timestamp ascending
     const chat = club.chat.sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
     res.json(chat);
+  } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// DELETE /clubs/:clubId/chat/:messageId
+exports.deleteClubChatMessage = async (req, res) => {
+  try {
+    const { clubId, messageId } = req.params;
+    const club = await Club.findById(clubId);
+    if (!club) return res.status(404).json({ message: 'Club not found' });
+
+    // Remove the message by its _id
+    const initialLength = club.chat.length;
+    club.chat = club.chat.filter(msg => msg._id.toString() !== messageId);
+    if (club.chat.length === initialLength) {
+      return res.status(404).json({ message: 'Message not found' });
+    }
+    await club.save();
+    res.json({ message: 'Message deleted successfully' });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
@@ -211,6 +228,24 @@ exports.getClubById = async (req, res) => {
       icon: club.icon,
     });
   } catch (err) {
+    res.status(500).json({ message: 'Server error' });
+  }
+};
+
+// GET /clubs/:clubId/members
+exports.getClubMembers = async (req, res) => {
+  try {
+    const { clubId } = req.params;
+    const club = await Club.findById(clubId).populate('members', 'name email studentId avatar');
+    
+    if (!club) {
+      return res.status(404).json({ message: 'Club not found' });
+    }
+
+    // All users and organizers can view members
+    res.json(club.members);
+  } catch (err) {
+    console.error('Error fetching club members:', err);
     res.status(500).json({ message: 'Server error' });
   }
 }; 

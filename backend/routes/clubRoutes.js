@@ -5,18 +5,24 @@ const combinedAuth = require('../middleware/combinedAuth');
 const organizerAuth = require('../middleware/organizerAuth');
 
 // Get all clubs (with optional search)
-router.get('/clubs', combinedAuth, clubController.getClubs);
+router.get('/', combinedAuth, clubController.getClubs);
 
 // Get club by ID
-router.get('/clubs/:clubId', organizerAuth, clubController.getClubById);
+router.get('/:clubId', combinedAuth, clubController.getClubById);
 
 // Join a club
-router.post('/clubs/join', combinedAuth, clubController.joinClub);
+router.post('/join', combinedAuth, clubController.joinClub);
 
 // Exit a club
-router.post('/clubs/exit', combinedAuth, clubController.exitClub);
+router.post('/exit', combinedAuth, clubController.exitClub);
 
 // Get chat history for a club
-router.get('/clubs/:clubId/chat', combinedAuth, clubController.getClubChat);
+router.get('/:clubId/chat', combinedAuth, clubController.getClubChat);
+
+// Get club members
+router.get('/:clubId/members', combinedAuth, clubController.getClubMembers);
+
+// Organizer: Delete a chat message by ID
+router.delete('/:clubId/chat/:messageId', organizerAuth, clubController.deleteClubChatMessage);
 
 module.exports = router; 

@@ -14,7 +14,7 @@ function OrganizerClubChatWrapper() {
       if (!clubId) return;
       try {
         const token = localStorage.getItem('uniplay_organizer_token');
-        const response = await fetch(`${API_URL}/api/clubs/clubs/${clubId}`, {
+        const response = await fetch(`${API_URL}/api/clubs/${clubId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.ok) {

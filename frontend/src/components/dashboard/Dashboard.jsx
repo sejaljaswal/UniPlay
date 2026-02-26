@@ -30,7 +30,7 @@ function Dashboard() {
       setClubsLoading(true);
       try {
         const token = localStorage.getItem('uniplay_token');
-        const res = await fetch(`${API_URL}/api/clubs/clubs?search=`, {
+        const res = await fetch(`${API_URL}/api/clubs?search=`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (!res.ok) throw new Error('Failed to fetch clubs');
@@ -79,7 +79,7 @@ function Dashboard() {
         setUpcomingEvents(prev => prev.map(event => event._id === eventId ? updatedEvent : event));
         await refreshUser();
       }
-    } catch (err) {} finally {
+    } catch (err) { } finally {
       setEnrollingEvents(prev => {
         const newSet = new Set(prev);
         newSet.delete(eventId);
@@ -105,7 +105,7 @@ function Dashboard() {
         setUpcomingEvents(prev => prev.map(event => event._id === eventId ? updatedEvent : event));
         await refreshUser();
       }
-    } catch (err) {} finally {
+    } catch (err) { } finally {
       setEnrollingEvents(prev => {
         const newSet = new Set(prev);
         newSet.delete(eventId);

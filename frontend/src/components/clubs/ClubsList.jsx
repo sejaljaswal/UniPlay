@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import ClubChat from './ClubChat';
 import { toast } from 'react-toastify';
-import { useLocation } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5555';
@@ -21,7 +21,7 @@ function ClubsList() {
     setError('');
     try {
       const token = localStorage.getItem('uniplay_token');
-      const res = await fetch(`${API_URL}/api/clubs/clubs?search=${encodeURIComponent(query)}`, {
+      const res = await fetch(`${API_URL}/api/clubs?search=${encodeURIComponent(query)}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch clubs');
@@ -53,7 +53,7 @@ function ClubsList() {
     setError('');
     try {
       const token = localStorage.getItem('uniplay_token');
-      const endpoint = club.joined ? `${API_URL}/api/clubs/clubs/exit` : `${API_URL}/api/clubs/clubs/join`;
+      const endpoint = club.joined ? `${API_URL}/api/clubs/exit` : `${API_URL}/api/clubs/join`;
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: {
@@ -76,10 +76,10 @@ function ClubsList() {
 
   if (activeChatClub) {
     return (
-      <div className="bg-gradient-to-br from-blue-50 via-purple-50 to-orange-50 flex flex-col items-center">
+      <div className="w-full min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-orange-50 flex flex-col">
         <button
           onClick={() => setActiveChatClub(null)}
-          className="mb-6 px-6 py-2 rounded-xl bg-white text-blue-600 border border-blue-600 font-semibold shadow hover:bg-blue-50 transition-all"
+          className="self-start m-8 px-6 py-2 rounded-xl bg-white text-blue-600 border border-blue-600 font-semibold shadow hover:bg-blue-50 transition-all"
         >
           ← Back to Clubs
         </button>
@@ -136,12 +136,12 @@ function ClubsList() {
                     : club.joined ? 'Exit Club' : 'Join Now'}
                 </button>
                 {club.joined && (
-                  <button
-                    onClick={() => setActiveChatClub(club)}
-                    className="mt-4 w-full py-2 rounded-xl font-semibold text-lg bg-gradient-to-r from-purple-500 to-orange-400 text-white shadow hover:from-purple-600 hover:to-orange-500 transition-all"
+                  <Link
+                    to={`/clubs/${club._id}`}
+                    className="mt-4 w-full py-2 rounded-xl font-semibold text-lg bg-gradient-to-r from-purple-500 to-orange-400 text-white shadow hover:from-purple-600 hover:to-orange-500 transition-all text-center block"
                   >
                     💬 Chat
-                  </button>
+                  </Link>
                 )}
               </div>
             ))}

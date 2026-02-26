@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, useParams } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import { AppProvider } from './contexts/AppContext';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import Dashboard from './components/dashboard/Dashboard';
@@ -34,7 +35,7 @@ function ClubChatWrapper() {
       if (!clubId) return;
       try {
         const token = localStorage.getItem('uniplay_token');
-        const response = await fetch(`${API_URL}/api/clubs/clubs/${clubId}`, {
+        const response = await fetch(`${API_URL}/api/clubs/${clubId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.ok) {
@@ -85,15 +86,18 @@ function AppRoutes() {
 
       {/* Main app (protected) */}
       {user && (
-        <Route element={<Layout />}>
-          <Route path="/" element={<Dashboard key={user.clubsJoined} />} />
-          <Route path="/games" element={<GamesList />} />
-          <Route path="/games/:gameId" element={<GamePage />} />
-          <Route path="/leaderboard" element={<Leaderboard />} />
-          <Route path="/profile" element={<UserProfile />} />
-          <Route path="/clubs" element={<ClubsList />} />
+        <>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Dashboard key={user.clubsJoined} />} />
+            <Route path="/games" element={<GamesList />} />
+            <Route path="/games/:gameId" element={<GamePage />} />
+            <Route path="/leaderboard" element={<Leaderboard />} />
+            <Route path="/profile" element={<UserProfile />} />
+            <Route path="/clubs" element={<ClubsList />} />
+          </Route>
+          {/* Club chat route outside Layout for full screen */}
           <Route path="/clubs/:clubId" element={<ClubChatWrapper />} />
-        </Route>
+        </>
       )}
       {/* Fallbacks */}
       <Route path="*" element={<Navigate to={user ? '/' : '/login'} />} />
@@ -103,7 +107,7 @@ function AppRoutes() {
 
 function App() {
   return (
-    <>
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar={false} newestOnTop closeOnClick pauseOnFocusLoss draggable pauseOnHover />
       <Router>
         <AuthProvider>
@@ -116,7 +120,7 @@ function App() {
           </AppProvider>
         </AuthProvider>
       </Router>
-    </>
+    </GoogleOAuthProvider>
   );
 }
 
