@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Play, Mail, Lock, AlertCircle, Eye, EyeOff } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5555';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function OrganizerLogin() {
   const [form, setForm] = useState({ email: '', password: '' });
@@ -66,13 +66,13 @@ export default function OrganizerLogin() {
             <label className="block text-base font-bold text-blue-900 mb-2">Password</label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-6 h-6 text-blue-400" />
-              <input 
-                name="password" 
-                type={showPassword ? "text" : "password"} 
-                value={form.password} 
-                onChange={handleChange} 
-                required 
-                className="w-full pl-12 pr-12 py-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-400 text-blue-900 text-lg" 
+              <input
+                name="password"
+                type={showPassword ? "text" : "password"}
+                value={form.password}
+                onChange={handleChange}
+                required
+                className="w-full pl-12 pr-12 py-3 border border-blue-200 rounded-lg focus:ring-2 focus:ring-blue-400 text-blue-900 text-lg"
               />
               <button
                 type="button"

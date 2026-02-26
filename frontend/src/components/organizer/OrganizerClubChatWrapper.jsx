@@ -2,7 +2,7 @@ import React from 'react';
 import { useParams } from 'react-router-dom';
 import OrganizerClubChat from './OrganizerClubChat';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5555';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function OrganizerClubChatWrapper() {
   const { clubId } = useParams();

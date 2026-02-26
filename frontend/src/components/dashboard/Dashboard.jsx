@@ -14,7 +14,7 @@ import {
   UserMinus,
 } from 'lucide-react';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5555';
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Dashboard() {
   const { user, refreshUser } = useAuth();

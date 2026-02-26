@@ -27,7 +27,7 @@ function UserProfile() {
       const formData = new FormData();
       formData.append('profilePicture', selectedImage);
       const token = localStorage.getItem('uniplay_token');
-      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5555';
+      const API_URL = import.meta.env.VITE_API_URL;
       const response = await fetch(`${API_URL}/api/users/profile-picture`, {
         method: 'POST',
         headers: {

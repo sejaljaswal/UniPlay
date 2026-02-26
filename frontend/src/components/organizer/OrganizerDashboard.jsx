@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5555';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export default function OrganizerDashboard() {
   const [events, setEvents] = useState([]);
@@ -25,7 +25,7 @@ export default function OrganizerDashboard() {
         const data = await res.json();
         setOrganizer(data);
       }
-    } catch (err) {}
+    } catch (err) { }
   };
 
   const fetchEvents = async () => {
@@ -44,9 +44,9 @@ export default function OrganizerDashboard() {
     setLoading(false);
   };
 
-  useEffect(() => { 
+  useEffect(() => {
     fetchOrganizer();
-    fetchEvents(); 
+    fetchEvents();
   }, []);
 
   const handleFormChange = (e) => {

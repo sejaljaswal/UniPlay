@@ -28,7 +28,7 @@ function ClubChatWrapper() {
   const { clubId } = useParams();
   const [clubDetails, setClubDetails] = React.useState(null);
   const [loading, setLoading] = React.useState(true);
-  const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5555';
+  const API_URL = import.meta.env.VITE_API_URL;
 
   React.useEffect(() => {
     const fetchClubDetails = async () => {

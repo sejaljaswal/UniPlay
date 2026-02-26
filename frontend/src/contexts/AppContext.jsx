@@ -10,7 +10,7 @@ export function useApp() {
   return context;
 }
 
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5555';
+const API_URL = import.meta.env.VITE_API_URL;
 
 export function AppProvider({ children }) {
   const [games, setGames] = useState([]);
