@@ -17,4 +17,7 @@ export default defineConfig({
     },
   },
   publicDir: 'public',
+  define: {
+    'import.meta.env.VITE_API_URL': JSON.stringify('http://localhost:5555'),
+  },
 })

@@ -3,30 +3,31 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../contexts/AuthContext';
 import { toast } from 'react-toastify';
 import { Eye, EyeOff, Mail, Lock, User, CreditCard, AlertCircle } from 'lucide-react';
+import { GoogleLogin } from '@react-oauth/google';
 
 // Custom Logo Component
 function UniPlayLogo({ className = "w-12 h-12" }) {
   return (
     <div className="flex items-center gap-3">
-       <div className={`${className} flex items-center justify-center`}>
+      <div className={`${className} flex items-center justify-center`}>
         <svg className="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" style={{stopColor: '#6366F1'}} />
-              <stop offset="50%" style={{stopColor: '#A855F7'}} />
-              <stop offset="100%" style={{stopColor: '#EC4899'}} />
+              <stop offset="0%" style={{ stopColor: '#6366F1' }} />
+              <stop offset="50%" style={{ stopColor: '#A855F7' }} />
+              <stop offset="100%" style={{ stopColor: '#EC4899' }} />
             </linearGradient>
           </defs>
-          <path 
+          <path
             d="M 20,10 C 20,5 25,0 30,0 L 70,0 C 75,0 80,5 80,10 L 80,60 C 80,80 65,100 50,100 C 35,100 20,80 20,60 Z"
-            fill="url(#logoGradient)" 
+            fill="url(#logoGradient)"
           />
           <circle cx="50" cy="45" r="18" fill="white" />
           <path d="M 50 27 A 18 18 0 0 0 50 63" fill="none" stroke="#E5E7EB" strokeWidth="4" />
-           <path d="M 38 35 A 18 18 0 0 1 62 55" fill="none" stroke="#E5E7EB" strokeWidth="4" />
+          <path d="M 38 35 A 18 18 0 0 1 62 55" fill="none" stroke="#E5E7EB" strokeWidth="4" />
         </svg>
       </div>
-       <span className="text-5xl font-bold text-gray-800">UniPlay</span>
+      <span className="text-5xl font-bold text-gray-800">UniPlay</span>
     </div>
   );
 }
@@ -40,8 +41,18 @@ function Signup() {
     confirmPassword: ''
   });
   const [error, setError] = useState('');
-  const { signup, loading } = useAuth();
+  const { signup, googleLogin, loading } = useAuth();
   const navigate = useNavigate();
+
+  const handleGoogleSuccess = async (credentialResponse) => {
+    const success = await googleLogin(credentialResponse.credential);
+    if (success) {
+      navigate('/dashboard');
+      toast.success('Logged in successfully!');
+    } else {
+      setError('Google authentication failed');
+    }
+  };
 
   const handleChange = (e) => {
     setFormData({
@@ -199,6 +210,17 @@ function Signup() {
             {loading ? 'Creating Account...' : 'Create Account'}
           </button>
         </form>
+
+        <div className="mt-6 flex justify-center">
+          <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => setError('Google signup failed')}
+            useOneTap
+            theme="outline"
+            shape="rectangular"
+            width="100%"
+          />
+        </div>
 
         <div className="mt-8 text-center">
           <Link to="/login" className="text-blue-600 hover:text-blue-700 font-bold text-base">

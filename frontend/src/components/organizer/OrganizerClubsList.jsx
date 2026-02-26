@@ -16,7 +16,7 @@ function OrganizerClubsList() {
     setError('');
     try {
       const token = localStorage.getItem('uniplay_organizer_token');
-      const res = await fetch(`${API_URL}/api/clubs/clubs?search=${encodeURIComponent(query)}`, {
+      const res = await fetch(`${API_URL}/api/clubs?search=${encodeURIComponent(query)}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!res.ok) throw new Error('Failed to fetch clubs');
@@ -38,7 +38,7 @@ function OrganizerClubsList() {
     setError('');
     try {
       const token = localStorage.getItem('uniplay_organizer_token');
-      const endpoint = club.joined ? `${API_URL}/api/clubs/clubs/exit` : `${API_URL}/api/clubs/clubs/join`;
+      const endpoint = club.joined ? `${API_URL}/api/clubs/exit` : `${API_URL}/api/clubs/join`;
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: {
